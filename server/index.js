@@ -23,9 +23,9 @@ mongoose.connect(uri, {
 // app.use('/words', wordRoutes);
 
 //TEST
-app.get("/api", (req, res) => {
-    res.json({ message: "Hello from server!" });
-});
+const test = require('./routes/testRoute')
+app.use('/api', test);
+
 
 
 // Start the server

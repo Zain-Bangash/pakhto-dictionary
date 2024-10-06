@@ -55,18 +55,19 @@ import axios from 'axios';
 import "./App.css";
 
 function App() {
-  const [data, setData] = useState("");
+  const [test, setTest] = useState({ name: '', message: ''});
 
   useEffect(() => {
-        axios.get('http://localhost:3001/api')
-        .then((res) => setData(res.data.message))
+        axios.get('http://localhost:3001/api/test')
+        .then((res) => setTest(res.data))
         .catch((err) => console.error(err));
       }, []);
 
   return (
     <div className="App">
       <header className="App-header">
-        <p>{!data ? "Loading..." : data}</p>
+        <p>{!test.name ? "Loading..." : test.name}</p>
+        <p>{test.message}</p>
       </header>
     </div>
   );
