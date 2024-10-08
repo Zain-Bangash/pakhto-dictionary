@@ -1,8 +1,12 @@
-// const mongoose = require('mongoose');
-// const wordSchema = new mongoose.Schema({
-//   term: String,
-//   definition: String,
-//   usage: String,
-// });
+const mongoose = require('mongoose');
+const { Schema, model } = mongoose;
 
-// module.exports = mongoose.model('Word', wordSchema);
+const wordSchema = new Schema({
+  term: String,
+  definition: String,
+  usage: String,
+});
+
+const Word = model('Word', wordSchema);
+
+module.exports = Word;
