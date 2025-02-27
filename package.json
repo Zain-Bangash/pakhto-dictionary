@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
-    "pakhto-dictonary": "file:"
+    "pakhto-dictonary": "file:",
+    "react-scripts": "^5.0.1"
   }
 }

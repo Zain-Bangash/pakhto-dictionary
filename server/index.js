@@ -10,22 +10,16 @@ app.use(cors());
 // Use JSON middleware
 app.use(express.json());
 
-const uri =
-"mongodb+srv://Bangakh:bangakh101@cluster0.oq0rk.mongodb.net/";
+const uri = "mongodb+srv://Bangakh:bangakh101@cluster0.oq0rk.mongodb.net/";
 // Create a new MongoClient
 mongoose.connect(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
 
-// Define routes
-// const wordRoutes = require('./routes/wordRoutes');
-// app.use('/words', wordRoutes);
-
-//TEST
-app.get("/api", (req, res) => {
-    res.json({ message: "Hello from server!" });
-});
+ //Define routes
+ const wordRoutes = require('./routes/wordRoutes');
+ app.use('/words', wordRoutes);
 
 
 // Start the server
