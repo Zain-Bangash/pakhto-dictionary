@@ -10,7 +10,7 @@ app.use('/words', wordRoutes);
 
 beforeAll(async () => {
   const url = 'mongodb+srv://Bangakh:bangakh101@cluster0.oq0rk.mongodb.net/';
-  await mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
+  await mongoose.connect(url, { });
 });
 
 afterAll(async () => {
@@ -26,7 +26,6 @@ describe("Getting words without search", () => {
     expect(response.body.definition).toBe('Donkey');
     expect(response.body.usage).toBe('Khar Waksa');
   });
-
   test("Shouldn't get more than a new word", async () => {
     const response = await request(app).get('/words').send();
     expect(response.statusCode).toBe(200);
@@ -42,32 +41,37 @@ describe("Getting words without search", () => {
 
 describe("Getting words through search", () => {
 
-  test('By term, 1st letter capitalized', async () => {
-    const response = await request(app).get('/words/search?term=Ukhyar').send();
-    console.log(response.body);
-    expect(response.statusCode).toBe(200);
-    expect(response.body.term).toBe('Ukhyar');
-    expect(response.body.definition).toBe('Smart');
-    expect(response.body.usage).toBe('Ukhyar kas de');
-  });
   test('By term, 1st letter lower-case', async () => {
     const response = await request(app).get('/words/search?term=ukhyar').send();
-    console.log(response.body);
     expect(response.statusCode).toBe(200);
     expect(response.body.term).toBe('Ukhyar');
     expect(response.body.definition).toBe('Smart');
     expect(response.body.usage).toBe('Ukhyar kas de');
   });
-
-  test('Get a specific word', async () => {
+  test('By defintion, 1st letter lower-case', async () => {
     const response = await request(app).get('/words/search?definition=donkey').send();
-    console.log(response.body);
     expect(response.statusCode).toBe(200);
     expect(response.body.term).toBe('Khar');
     expect(response.body.definition).toBe('Donkey');
     expect(response.body.usage).toBe('Khar Waksa');
   });
-
+  test('By defintion and term', async () => {
+    const response = await request(app).get('/words/search?definition=donkey&term=khar').send();
+    expect(response.statusCode).toBe(200);
+    expect(response.body.term).toBe('Khar');
+    expect(response.body.definition).toBe('Donkey');
+    expect(response.body.usage).toBe('Khar Waksa');
+  });
+  test('Incorrect parameter value', async () => {
+    const response = await request(app).get('/words/search?definition=ukhyar').send();
+    expect(response.statusCode).toBe(404);
+    expect(response.text).toBe('Word not found');
+  });
+  test('Incorrect parameter value', async () => {
+    const response = await request(app).get('/words/search?definition=khar&term=donkey').send();
+    expect(response.statusCode).toBe(404);
+    expect(response.text).toBe('Word not found');
+  });
 });
 
 

@@ -7,7 +7,7 @@ const TEST_DB_URI = 'mongodb+srv://Bangakh:bangakh101@cluster0.oq0rk.mongodb.net
 describe('MongoDB Connection Test', () => {
   // Before running tests, try to establish the MongoDB connection
   beforeAll(async () => {
-    await mongoose.connect(TEST_DB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+    await mongoose.connect(TEST_DB_URI, { });
   });
 
   // After tests are completed, close the connection to avoid open handles
