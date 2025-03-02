@@ -1,6 +1,7 @@
 Some commands to run:
 npm install react-scripts@latest
 npm install cors
+npm install bootstrap
 npm install
 npm run
 go to server folder: "node index.js"

@@ -7,13 +7,12 @@ const router = express.Router({ mergeParams: true });
 // Get a word (limit = how many words to get)
 router.get('/', async (req, res) => {
   try {
-    // const findResult = await Word.findOne(); //Word.find().limit(limit);
 
     // Check if the `limit` query parameter is provided
     const limit = req.query.limit ? parseInt(req.query.limit) : null;
 
     // Fetch words from the database with optional limit
-    const words = limit ? await Word.find().limit(limit) : await Word.findOne();
+    const words = limit ? await Word.find({approved: true}).limit(limit) : await Word.findOne({approved: true});
     
     res.status(200).send(words);
   } catch (e) {
@@ -68,4 +67,4 @@ router.get('/search', async (req, res) => {
     }
 });
 
-module.exports = router;
+module.exports = router;  
