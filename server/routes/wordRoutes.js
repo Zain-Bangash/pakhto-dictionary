@@ -30,7 +30,7 @@ router.post('/add', async (req, res) => {
 
     const word = new Word(req.body);
     await word.save();
-    res.status(201).send(word);
+    res.status(201);
   } catch (e) {
     if (e.code === 11000) {
       return res.status(400).json({ error: "Duplicate word entry! This term already exists." });

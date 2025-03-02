@@ -2,16 +2,14 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import { Link, useNavigate } from "react-router-dom";
 
 
 const Dictionary = () => {
   const [words, setWords] = useState([]);
   const [newWord, setNewWord] = useState({ term: '', definition: '', usage: '' });
   const [errorMessage, setErrorMessage] = useState("");
-  const [token, setToken] = useState(localStorage.getItem("token"));
-  const [role, setRole] = useState(localStorage.getItem("role"));
-  const navigate = useNavigate();
+  const [successMessage, setSuccessMessage] = useState("");
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     axios.get('http://localhost:3001/words?limit=10')
@@ -28,13 +26,6 @@ const Dictionary = () => {
       });
   }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("role");
-    setToken(null);
-    setRole(null);
-    navigate("/dictionary");
-  };
 
   const addWord = async () => {
     if (!newWord.term || !newWord.definition || !newWord.usage) {
@@ -45,10 +36,9 @@ const Dictionary = () => {
     try {
       const response = await axios.post("http://localhost:3001/words/add", newWord);
       
-      // Success: Add new word to the list and clear the form
-      setWords((prevWords) => [...prevWords, response.data]);
       setNewWord({ term: "", definition: "", usage: "" });
       setErrorMessage("");
+      setSuccessMessage("Word will be added once approved! Thank you");
     } catch (error) {
       if (error.response) {
         if (error.response && error.response.status === 400 && error.response.data.error === "This word already exists in the dictionary!") {
@@ -57,6 +47,8 @@ const Dictionary = () => {
           setErrorMessage("Something went wrong, please try again!");
         }
       }
+      setSuccessMessage("");
+
     }
   };
   
@@ -70,18 +62,10 @@ const Dictionary = () => {
       {!token ? (
         <>
         <p className="mb-4 fs-5 text-muted">Login to add words!</p> 
-        <div class="d-flex justify-content-center">
-            <div className="d-flex gap-4">
-                <Link to="/login" className="btn btn-primary btn-lg">🔐 Login</Link>
-            </div>
-        </div>
         </>
         ) : (
             <>
-            <button className="btn btn-danger mb-3" onClick={handleLogout}>
-                Logout
-            </button>
-
+    
             {/* Input Form */}
             <div className="row justify-content-center mb-3">
                 <div className="col-md-3">
@@ -122,7 +106,7 @@ const Dictionary = () => {
 
 
       {/* Error Message */}
-      {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
+      {errorMessage && <div className="alert alert-danger">{errorMessage}</div>} {successMessage && <div className='success'> {successMessage}</div>}
 
       {/* Word Table */}
       <div className="table-responsive">
