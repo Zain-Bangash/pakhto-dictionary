@@ -1,22 +1,25 @@
-Some commands to run:
-npm install react-scripts@latest
-npm install cors
-npm install bootstrap
-npm install
-npm run
-go to server folder: "node index.js"
-go to client folder: "npm start"
+A full-stack Pashto Dictionary web app for preserving the Bangash dialect of the Pashto language.
+Built with React, Node.js, Express, and MongoDB.
 
-Jira: 
+Features implemented so far:
 
 
-Tasks to do: 
+    Displaying words
+    Users can add words (which will show once approved by admin)
+    Dynamic page content based on account type
+    Admin can approve words
+    Login / Logout
 
-Database: 
-    pakhtoTaki:
-        word
-        meaning
-        use
+Features of implement in the near future:
+
+
+    User Registration
+    Email authentication
+    Search words / Categorize words
+    Add token verification to backend functions that require login (such as add and approve)
+    User management dashboard for admin
+    Potential expansion to the database may include the following fields: 
+
         synonyms
         masculine
         feminine
@@ -26,12 +29,20 @@ Database:
         verifiedAt
         addedBy
         addedAt
+    
+Commands:
 
-    users:
-        username
-        email
-        password (encrypted??)
-        isAdmin
-        createdAt
+    git clone https://github.com/yourusername/pashto-dictionary.git
+    cd pashto-dictionary
 
-nextTask: users registration, email verification, login, admin verifies new words, admin frontend (word verification and user to admin promotion)
+    cd server
+    npm install
+    npm install cors
+    node index.js
+
+    cd client
+    npm install
+    npm install react-scripts@latest
+    npm install bootstrap
+    npm start
+
