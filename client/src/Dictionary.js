@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
+import { Link } from "react-router-dom";
 
 
 const Dictionary = () => {
@@ -10,6 +11,7 @@ const Dictionary = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const token = localStorage.getItem("token");
+  const isAdmin = localStorage.getItem("role") === "admin";
 
   useEffect(() => {
     axios.get('http://localhost:3001/words?limit=10')
@@ -28,10 +30,6 @@ const Dictionary = () => {
 
 
   const addWord = async () => {
-    if (!newWord.term || !newWord.definition || !newWord.usage) {
-      setErrorMessage("Please fill in all fields!");
-      return;
-    }
 
     try {
       const response = await axios.post("http://localhost:3001/words/add", newWord);
@@ -47,8 +45,8 @@ const Dictionary = () => {
           setErrorMessage("Something went wrong, please try again!");
         }
       }
+      console.log(error);
       setSuccessMessage("");
-
     }
   };
   
@@ -103,10 +101,21 @@ const Dictionary = () => {
             </div>
             </>
         )}
-
+      <h1>
+        {isAdmin && (
+          <>
+          <div className="d-flex gap-4">
+            <Link to="/pending" className="btn btn-primary w-100">⏳ View Pending Words</Link>
+          </div>
+          </>
+          )
+        }
+      </h1>
 
       {/* Error Message */}
-      {errorMessage && <div className="alert alert-danger">{errorMessage}</div>} {successMessage && <div className='success'> {successMessage}</div>}
+      {errorMessage && <div className="alert alert-danger">{errorMessage}</div>} 
+      {/* Success Message */}
+      {successMessage && <div className="alert alert-success text-center">{successMessage}</div>}
 
       {/* Word Table */}
       <div className="table-responsive">
@@ -124,7 +133,7 @@ const Dictionary = () => {
                 <tr key={word._id}>
                   <td><strong>{word.term}</strong></td>
                   <td>{word.definition}</td>
-                  <td>{word.usage || "—"}</td>
+                  <td>{word.usage}</td>
                 </tr>
               ))
             ) : (

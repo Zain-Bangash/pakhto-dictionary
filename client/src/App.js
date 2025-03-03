@@ -5,6 +5,7 @@ import Home from "./Home";   // Import Home page
 import Login from "./Login"; // Import Login page
 import Dictionary from "./Dictionary"; // Import Dictionary page
 import Navbar from "./Navbar";
+import Pending from "./Pending";
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/dictionary" element={<Dictionary />} />
+        <Route path="/pending" element={<Pending />} />
       </Routes>
     </div>
   );

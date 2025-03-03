@@ -20,17 +20,42 @@ router.get('/', async (req, res) => {
   }
 });
 
+router.get('/pending', async (req, res) => {
+  try {
+
+    // Check if the `limit` query parameter is provided
+    const limit = req.query.limit ? parseInt(req.query.limit) : null;
+
+    // Fetch words from the database with optional limit
+    const words = limit ? await Word.find({approved: false}).limit(limit) : await Word.findOne({approved: false});
+    
+    res.status(200).send(words);
+  } catch (e) {
+    res.status(400).send(e.message);
+  }
+});
+
+router.post('/approve-pending', async (req, res) => {
+  try {
+    const editWord = await Word.findOneAndUpdate({ term: req.body.term }, { approved: true }, {
+      returnOriginal: false
+    });
+    res.status(201).send();
+  } catch (e) {
+    res.status(400).send(e.message);
+  }
+});
+
 router.post('/add', async (req, res) => {
   try {
     const existingWord = await Word.findOne({ term: req.body.term });
-    
     if (existingWord) {
       return res.status(400).json({ error: "This word already exists in the dictionary!" });
     }
 
     const word = new Word(req.body);
     await word.save();
-    res.status(201);
+    res.status(201).send();
   } catch (e) {
     if (e.code === 11000) {
       return res.status(400).json({ error: "Duplicate word entry! This term already exists." });
